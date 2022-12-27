@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vault-kubernetes-auth
+  name: vault-kubernetes-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-kubernetes-auth
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: vault-kubernetes-auth
+    spec:
+      serviceAccountName: vault-kubernetes-auth
+      containers:
+        - image: ghcr.io/soerenschneider/vault-kubernetes-auth
+          env:
+            - name: VAULT_ADDR
+              value: "http://vault:8200"
+          name: vault-kubernetes-auth
+          imagePullPolicy:  IfNotPresent
